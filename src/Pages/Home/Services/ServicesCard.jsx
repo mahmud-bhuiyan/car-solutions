@@ -1,5 +1,5 @@
 const ServicesCard = ({ service }) => {
-  const { _id, title, img, price } = service;
+  const { title, img, price } = service;
 
   return (
     <div>
