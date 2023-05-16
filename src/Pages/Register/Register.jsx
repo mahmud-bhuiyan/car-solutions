@@ -1,16 +1,37 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const { createUser } = useContext(AuthContext);
+
   const handleRegister = (event) => {
     event.preventDefault();
     const form = event.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
+    // const confirm = form.confirm.value;
+
+    // if (password === confirm) {
+    console.log(name, email, password);
+    // } else {
+    //   console.log("object");
+    // }
+
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        form.reset();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
@@ -22,7 +43,7 @@ const Register = () => {
           </div>
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
-              <h1 className="text-5xl font-bold text-center mb-10">Sign Up</h1>
+              <h1 className="text-5xl font-bold text-center mb-10">Register</h1>
               <form onSubmit={handleRegister}>
                 {/* name */}
                 <div className="form-control">
@@ -102,7 +123,7 @@ const Register = () => {
                   <input
                     className="btn btn-primary"
                     type="submit"
-                    value="Login"
+                    value="Register"
                   />
                 </div>
               </form>
