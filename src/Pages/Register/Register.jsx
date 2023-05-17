@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -150,6 +151,7 @@ const Register = () => {
                   Login
                 </Link>
               </p>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>

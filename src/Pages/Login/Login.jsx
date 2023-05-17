@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -20,23 +21,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        const loggedUser = {
-          email: user.email,
-        };
-        console.log(loggedUser);
-
-        fetch("http://localhost:5000/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(loggedUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            localStorage.setItem("car-access-token", data.token);
-            navigate(from, { replace: true });
-          });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error.message);
@@ -95,6 +80,7 @@ const Login = () => {
                   Register
                 </Link>
               </p>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>
