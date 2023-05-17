@@ -26,8 +26,6 @@ const SocialLogin = () => {
         >
           G
         </button>
-        <button className="btn btn-circle btn-outline mx-6">G</button>
-        <button className="btn btn-circle btn-outline">G</button>
       </div>
     </div>
   );
