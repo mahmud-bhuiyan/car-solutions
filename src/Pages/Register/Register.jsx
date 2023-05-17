@@ -1,13 +1,14 @@
 import { useContext } from "react";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -15,23 +16,28 @@ const Register = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    // const confirm = form.confirm.value;
+    const confirm = form.confirm.value;
+    console.log(name, email);
 
-    // if (password === confirm) {
-    console.log(name, email, password);
-    // } else {
-    //   console.log("object");
-    // }
-
-    createUser(email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        form.reset();
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if (password.length < 6) {
+      setErrorMessage("Password must be 6 character long!");
+      return;
+    } else if (password === confirm) {
+      createUser(email, password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+          form.reset();
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setErrorMessage(error.message);
+        });
+    } else {
+      setErrorMessage("Password did not match!");
+      return;
+    }
   };
 
   return (
@@ -39,7 +45,11 @@ const Register = () => {
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
           <div className="w-1/2 mr-12">
-            <img src="https://i.ibb.co/f9rqJXk/register-1.png" alt="" />
+            <img
+              style={{ width: "600px" }}
+              src="https://i.ibb.co/DL17bqC/register-3.png"
+              alt=""
+            />
           </div>
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
@@ -55,6 +65,7 @@ const Register = () => {
                     name="name"
                     placeholder="Name"
                     className="input input-bordered"
+                    required
                   />
                 </div>
                 {/* email */}
@@ -67,6 +78,7 @@ const Register = () => {
                     name="email"
                     placeholder="email"
                     className="input input-bordered"
+                    required
                   />
                 </div>
                 {/* password */}
@@ -80,6 +92,7 @@ const Register = () => {
                       name="password"
                       placeholder="Password"
                       className="input input-bordered pr-10"
+                      required
                     />
                     <div
                       className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
@@ -105,6 +118,7 @@ const Register = () => {
                       name="confirm"
                       placeholder="Confirm password"
                       className="input input-bordered pr-10"
+                      required
                     />
                     <div
                       className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
@@ -127,6 +141,9 @@ const Register = () => {
                   />
                 </div>
               </form>
+              <p className="text-center text-red-600 font-bold">
+                {errorMessage}
+              </p>
               <p className="text-center my-4">
                 Already have an account?{" "}
                 <Link to="/login" className="text-orange-600 font-bold">
